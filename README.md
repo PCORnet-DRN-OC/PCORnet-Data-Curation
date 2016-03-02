@@ -19,7 +19,7 @@ Therefore, **this repository is not the production version of the code package**
 This code is designed to run in SAS versions 9.3 or higher. No other SAS packages are necessary. 
 
 ### Scope
-This query examines all 15 tables and all fields except the RAW fields. As noted in the PCORnet CDM specification, all tables must be present in an instantiation of the CDM, even if the table does not contain any records. The DEMOGRAPHIC, ENROLLMENT, ENCOUNTER, DIAGNOSIS, PROCEDURES, VITAL, and HARVEST tables are expected to be populated by all CDRNs. 
+Output tables are produced by running the SAS code against static local DataMarts in PCORnet CDM v3.0 with SAS data types. 
 
 CDM specifications are available at [http://www.pcornet.org/pcornet-common-data-model/] (http://www.pcornet.org/pcornet-common-data-model/). This version of the query allows DataMarts to incorporate CDM errata identified as of January 20, 2016 [https://github.com/CDMFORUM/CDM-ERRATA] (https://github.com/CDMFORUM/CDM-ERRATA).
 
