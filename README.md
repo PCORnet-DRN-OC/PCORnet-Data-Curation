@@ -21,7 +21,7 @@ This code is designed to run in SAS versions 9.3 or higher. No other SAS package
 ### Scope
 Output tables are produced by running the SAS code against static local DataMarts in PCORnet CDM v3.0 with SAS data types. 
 
-CDM specifications are available at [http://www.pcornet.org/pcornet-common-data-model/] (http://www.pcornet.org/pcornet-common-data-model/). This version of the query allows DataMarts to incorporate CDM errata identified as of January 20, 2016 [https://github.com/CDMFORUM/CDM-ERRATA] (https://github.com/CDMFORUM/CDM-ERRATA).
+CDM specifications are available at [http://www.pcornet.org/pcornet-common-data-model/] (http://www.pcornet.org/pcornet-common-data-model/). This version of the query allows DataMarts to incorporate [CDM errata] (https://github.com/CDMFORUM/CDM-ERRATA) identified as of January 20, 2016.
 
 ### Acknowledgments
 This code package was developed by the Data Characterization Development Team in the DRN OC, with members from the Duke Clinical Research Institute. We gratefully acknowledge their work and individual contributions.
