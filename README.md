@@ -1,5 +1,7 @@
 # PCORnet Data Characterization Query Package
 
+### Version v3.00
+
 ### Purpose
 This code package examines record-level data model conformance against the PCORnet Common Data Model v3.0, and generates output tables of counts and frequencies.
 
