@@ -3,7 +3,7 @@
 ### Purpose
 This code package examines record-level data model conformance against the PCORnet Common Data Model v3.0, and generates output tables of counts and frequencies.
 
-The Data Characterization Query Package is a compliment to the Diagnostic Query package. Data Characterization is run **after** the [Diagnostic Query package] (https://github.com/PCORnet-DRN-OC/PCORnet-Diagnostic-Query).
+The Data Characterization Query Package is a complement to the Diagnostic Query package. Data Characterization is run **after** the [Diagnostic Query package] (https://github.com/PCORnet-DRN-OC/PCORnet-Diagnostic-Query).
 
 ### PCORnet data partners run code packages distributed through PopMedNet
 It's crucially important for data partners to follow the process of running the exact code module distributed to your DataMart by the Operations Center (via PopMedNet). This process ensures that end-to-end provenance is preserved. Complete instructions on how to run this code are provided to PCORnet DataMarts when the query is distributed to a given DataMart. 
