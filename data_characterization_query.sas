@@ -1,9 +1,9 @@
 /*******************************************************************************
 *  $Source: data_characterization_query $;
-*    $Date: 2016/02/05
+*    $Date: 2016/03/14
 *    Study: PCORnet
 *
-*  Purpose: Produce PCORnet Data Characterization Query Package V3.00
+*  Purpose: Produce PCORnet Data Characterization Query Package V3.01
 * 
 *   Inputs: SAS program:  /sasprograms/run_queries.sas
 *
@@ -79,7 +79,7 @@ run ;
      format response_date date9.;
      datamartid="&dmid";
      response_date="&sysdate"d;
-     query_package="DC V3.00";
+     query_package="DC V3.01";
 %mend stdvar;
 
 *- Macros to apply threshold (low cell count) to applicable queries -*;
@@ -131,8 +131,8 @@ run ;
               else pre2010_n=strip(put(0,16.));
           end;
           else if n<&threshold then do;
-            future_dt_n=left(put(.t,threshold.));
-            pre2010_n=left(put(.t,threshold.));
+            future_dt_n=strip(put(.t,threshold.));
+            pre2010_n=strip(put(.t,threshold.));
           end;
 
           keep datamartid response_date query_package dataset tag min max
@@ -252,6 +252,7 @@ proc format;
        .n="N/A"
        .t="BT"
         99999999="99999999"
+        others = [16.0]
         ;
 run;
 
@@ -280,6 +281,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length all_n distinct_n null_n $20 dataset $25;
      set data end=eof;
      by patid;
 
@@ -369,6 +371,7 @@ quit;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      set query;
 
      * call standard variables *;
@@ -437,6 +440,7 @@ run;
 
 *- Re-order rows and format -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -509,6 +513,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -522,7 +527,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
 
      keep datamartid response_date query_package hispanic record_n record_pct;
@@ -584,6 +589,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -597,7 +603,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
 
      keep datamartid response_date query_package race record_n record_pct;
@@ -655,6 +661,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -668,7 +675,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
 
      keep datamartid response_date query_package sex record_n record_pct;
@@ -711,7 +718,7 @@ run;
 
      *- Derive appropriate counts and variables -*;
      data &encvar._oneway;
-          length tag $25;
+          length all_n distinct_n null_n $20 tag dataset $25;
           set &encvar end=eof;
           by &encvar;
 
@@ -769,7 +776,7 @@ quit;
 
 *- Derive appropriate counts - visits -*;
 data all_visit(keep=all_n) distinct(keep=distinct_visit);
-     length distinct_visit $200;
+     length all_n $20 distinct_visit $200;
      set encounter(keep=patid encounterid admit_date providerid enc_type) end=eof;
 
      * retain count of all records *;
@@ -800,6 +807,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length distinct_n $20 dataset $25;
      if _n_=1 then set all_distinct_n(keep=nobs);
      set all_visit;
 
@@ -874,6 +882,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -887,7 +896,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
 
      keep datamartid response_date query_package admitting_source 
@@ -965,6 +974,7 @@ ods listing;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=3));
 
@@ -979,7 +989,7 @@ data query;
      %threshold(type=3,nullval=col1^="ZZZD" and enctype^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
     
      keep datamartid response_date query_package enc_type admitting_source
@@ -1035,6 +1045,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n distinct_patid_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      merge stats(where=(_type_=1)) 
            pid_unique(where=(_type_^=99) rename=(_freq_=distinct_patid));
@@ -1051,8 +1062,8 @@ data query;
      %threshold(_tvar=distinct_patid,nullval=col1^="ZZZA")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
-     distinct_patid_n=left(put(distinct_patid,threshold.));
+     record_n=strip(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(distinct_patid,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
 
      keep datamartid response_date query_package admit_date record_n record_pct
@@ -1134,6 +1145,7 @@ run;
 
 *- Add first and last actual year/month values to every record -*;
 data query;
+     length record_n $20;
      if _n_=1 then set minact;
      if _n_=1 then set maxact;
      set stats(where=(_type_=1));
@@ -1155,7 +1167,7 @@ data query;
      %threshold(nullval=year_month^=99999999)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
 
      keep datamartid response_date query_package admit_date record_n;
 run;
@@ -1206,6 +1218,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      set stats(where=(_type_^=99));
 
      * call standard variables *;
@@ -1222,7 +1235,7 @@ data query;
      %threshold(nullval=year_month^=99999999)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
 
      keep datamartid response_date query_package enc_type admit_date record_n;
 run;
@@ -1277,6 +1290,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n distinct_patid_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      merge stats(where=(_type_=1)) 
            pid_unique(where=(_type_^=99) rename=(_freq_=distinct_patid));
@@ -1293,8 +1307,8 @@ data query;
      %threshold(_tvar=distinct_patid,nullval=col1^="ZZZA")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
-     distinct_patid_n=left(put(distinct_patid,threshold.));
+     record_n=strip(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(distinct_patid,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
 
      keep datamartid response_date query_package discharge_date record_n 
@@ -1376,6 +1390,7 @@ run;
 
 *- Add first and last actual year/month values to every record -*;
 data query;
+     length record_n $20;
      if _n_=1 then set minact;
      if _n_=1 then set maxact;
      set stats(where=(_type_=1));
@@ -1397,7 +1412,7 @@ data query;
      %threshold(nullval=year_month^=99999999)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
     
      keep datamartid response_date query_package discharge_date record_n;
 run;
@@ -1449,6 +1464,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      set stats;
 
      * call standard variables *;
@@ -1465,7 +1481,7 @@ data query;
      %threshold(nullval=year_month^=99999999)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
 
      keep datamartid response_date query_package enc_type discharge_date record_n;
 run;
@@ -1522,6 +1538,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -1535,7 +1552,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
     
      keep datamartid response_date query_package discharge_disposition
@@ -1589,6 +1606,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=3));
 
@@ -1603,7 +1621,7 @@ data query;
      %threshold(type=3,nullval=col1^="ZZZD" and enctype^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
 
      keep datamartid response_date query_package enc_type discharge_disposition
@@ -1675,6 +1693,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -1688,7 +1707,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
      keep datamartid response_date query_package discharge_status record_n 
@@ -1743,6 +1762,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=3));
 
@@ -1757,7 +1777,7 @@ data query;
      %threshold(type=3,nullval=col1^="ZZZD" and enctype^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
     
      keep datamartid response_date query_package enc_type discharge_status
@@ -1801,6 +1821,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -1814,7 +1835,7 @@ data query;
      %threshold(nullval=col1^="ZZZA")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
     
      keep datamartid response_date query_package drg record_n record_pct;
@@ -1871,6 +1892,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -1884,7 +1906,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
      keep datamartid response_date query_package drg_type record_n record_pct;
@@ -1934,6 +1956,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=3));
 
@@ -1948,7 +1971,7 @@ data query;
      %threshold(type=3,nullval=col1^="ZZZA" and enctype^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
     
      keep datamartid response_date query_package enc_type drg record_n 
@@ -2023,6 +2046,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n distinct_patid_n distinct_visit_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      merge stats(where=(_type_=1)) 
            pid_unique(where=(_type_^=99) rename=(_freq_=distinct_patid))
@@ -2042,9 +2066,9 @@ data query;
      %threshold(_tvar=distinct_visit,nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
-     distinct_patid_n=left(put(distinct_patid,threshold.));
-     distinct_visit_n=left(put(distinct_visit,threshold.));
+     record_n=strip(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(distinct_patid,threshold.));
+     distinct_visit_n=strip(put(distinct_visit,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
      keep datamartid response_date query_package enc_type record_n record_pct
@@ -2133,6 +2157,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length distinct_patid_n $20;
      set stats(rename=(period=periodn));
      by periodn;
 
@@ -2146,7 +2171,7 @@ data query;
      %threshold(nullval=periodn^=99)
 
      * counts *;
-     distinct_patid_n=left(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(_freq_,threshold.));
 
      keep datamartid response_date query_package period distinct_patid_n;
 run;
@@ -2232,6 +2257,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length distinct_patid_n $20;
      set stats(rename=(period=periodn));
      by periodn;
 
@@ -2245,7 +2271,7 @@ data query;
      %threshold(nullval=periodn^=99)
 
      * counts *;
-     distinct_patid_n=left(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(_freq_,threshold.));
 
      keep datamartid response_date query_package period distinct_patid_n;
 run;
@@ -2286,7 +2312,7 @@ run;
 
      *- Derive appropriate counts and variables -*;
      data &encvar._oneway;
-          length tag $25;
+          length all_n distinct_n null_n $20 tag dataset $25;
           set &encvar end=eof;
           by &encvar;
 
@@ -2362,6 +2388,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -2375,7 +2402,7 @@ data query;
      %threshold(nullval=col1^="ZZZA")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
     
      keep datamartid response_date query_package dx record_n record_pct;
@@ -2449,6 +2476,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n distinct_patid_n $20;
      merge stats
            pid_unique(rename=(_freq_=distinct_patid));
      by col1 dxtype;
@@ -2465,8 +2493,8 @@ data query;
      %threshold(_tvar=distinct_patid,nullval=col1^="ZZZA" and dxtype^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
-     distinct_patid_n=left(put(distinct_patid,threshold.));
+     record_n=strip(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(distinct_patid,threshold.));
 
      keep datamartid response_date query_package dx_type dx record_n
           distinct_patid_n;
@@ -2526,6 +2554,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -2539,7 +2568,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
      keep datamartid response_date query_package dx_source record_n record_pct;
@@ -2592,6 +2621,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      set stats;
 
      * call standard variables *;
@@ -2605,7 +2635,7 @@ data query;
      %threshold(nullval=col1^="ZZZD" and dxtype^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
 
      keep datamartid response_date query_package dx_type dx_source record_n;
 run;
@@ -2662,6 +2692,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -2675,7 +2706,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
 
      keep datamartid response_date query_package pdx record_n record_pct;
@@ -2751,6 +2782,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n distinct_patid_n $20;
      merge stats 
            stats_distinct(rename=(_freq_=_freq_encid))
            pid_unique(rename=(_freq_=_freq_patid));
@@ -2769,9 +2801,9 @@ data query;
      %threshold(_tvar=_freq_patid,nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
-     distinct_encid_n=left(put(_freq_encid,threshold.));
-     distinct_patid_n=left(put(_freq_patid,threshold.));
+     record_n=strip(put(_freq_,threshold.));
+     distinct_encid_n=strip(put(_freq_encid,threshold.));
+     distinct_patid_n=strip(put(_freq_patid,threshold.));
 
      keep datamartid response_date query_package enc_type pdx record_n 
           distinct_encid_n distinct_patid_n;
@@ -2838,6 +2870,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n distinct_encid_n distinct_patid_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      merge stats(where=(_type_=1)) 
            pid_unique(where=(_type_^=99) rename=(_freq_=distinct_patid))
@@ -2857,9 +2890,9 @@ data query;
      %threshold(_tvar=distinct_encid,nullval=col1^="ZZZA")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
-     distinct_patid_n=left(put(distinct_patid,threshold.));
-     distinct_encid_n=left(put(distinct_encid,threshold.));
+     record_n=strip(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(distinct_patid,threshold.));
+     distinct_encid_n=strip(put(distinct_encid,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
      keep datamartid response_date query_package admit_date record_n record_pct
@@ -2941,6 +2974,7 @@ run;
 
 *- Add first and last actual year/month values to every record -*;
 data query;
+     length record_n $20;
      if _n_=1 then set minact;
      if _n_=1 then set maxact;
      set stats(where=(_type_=1));
@@ -2962,7 +2996,7 @@ data query;
      %threshold(nullval=year_month^=99999999)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
     
      keep datamartid response_date query_package admit_date record_n;
 run;
@@ -3018,6 +3052,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n distinct_patid_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      merge stats(where=(_type_=1)) 
            pid_unique(where=(_type_^=99) rename=(_freq_=distinct_patid));
@@ -3034,8 +3069,8 @@ data query;
      %threshold(_tvar=distinct_patid,nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
-     distinct_patid_n=left(put(distinct_patid,threshold.));
+     record_n=strip(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(distinct_patid,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
      keep datamartid response_date query_package enc_type record_n record_pct 
@@ -3089,6 +3124,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      set stats;
 
      * call standard variables *;
@@ -3102,7 +3138,7 @@ data query;
 
      * counts *;
      enc_type=put(enctype,$enc_typ.);
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
 
      keep datamartid response_date query_package enc_type dx_type record_n;
 run;
@@ -3163,6 +3199,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n distinct_encid_n $20;
      merge stats
            stats_distinct(rename=(_freq_=_freq_encid))
      ;
@@ -3183,8 +3220,8 @@ data query;
      %threshold(_tvar=_freq_encid,nullval=enctype^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
-     distinct_encid_n=left(put(_freq_encid,threshold.));
+     record_n=strip(put(_freq_,threshold.));
+     distinct_encid_n=strip(put(_freq_encid,threshold.));
 
      keep datamartid response_date query_package enc_type admit_date record_n 
           distinct_encid_n;
@@ -3272,6 +3309,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length distinct_patid_n $20; 
      set stats(rename=(period=periodn));
      by periodn;
 
@@ -3285,7 +3323,7 @@ data query;
      %threshold(nullval=periodn^=99)
 
      * counts *;
-     distinct_patid_n=left(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(_freq_,threshold.));
 
      keep datamartid response_date query_package period distinct_patid_n;
 run;
@@ -3327,7 +3365,7 @@ run;
 
      *- Derive appropriate counts and variables -*;
      data &encvar._oneway;
-          length tag $25;
+          length all_n distinct_n null_n $20 tag dataset $25;
           set &encvar end=eof;
           by &encvar;
 
@@ -3403,6 +3441,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -3416,7 +3455,7 @@ data query;
      %threshold(nullval=col1^="ZZZA")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
     
      keep datamartid response_date query_package px record_n record_pct;
@@ -3482,6 +3521,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n distinct_encid_n distinct_patid_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      merge stats(where=(_type_=1)) 
            pid_unique(where=(_type_^=99) rename=(_freq_=distinct_patid))
@@ -3501,9 +3541,9 @@ data query;
      %threshold(_tvar=distinct_encid,nullval=col1^="ZZZA")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
-     distinct_patid_n=left(put(distinct_patid,threshold.));
-     distinct_encid_n=left(put(distinct_encid,threshold.));
+     record_n=strip(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(distinct_patid,threshold.));
+     distinct_encid_n=strip(put(distinct_encid,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
      keep datamartid response_date query_package admit_date record_n record_pct 
@@ -3585,6 +3625,7 @@ run;
 
 *- Add first and last actual year/month values to every record -*;
 data query;
+     length record_n $20;
      if _n_=1 then set minact;
      if _n_=1 then set maxact;
      set stats(where=(_type_=1));
@@ -3606,7 +3647,7 @@ data query;
      %threshold(nullval=year_month^=99999999)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
     
      keep datamartid response_date query_package admit_date record_n;
 run;
@@ -3671,6 +3712,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n distinct_encid_n distinct_patid_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      merge stats(where=(_type_=1)) 
            pid_unique(where=(_type_^=99) rename=(_freq_=distinct_patid))
@@ -3682,7 +3724,7 @@ data query;
      %stdvar
 
      * table values *;
-     admit_date=put(col1,$null.);
+     px_date=put(col1,$null.);
     
      * apply threshold *;
      %threshold(nullval=col1^="ZZZA")
@@ -3690,19 +3732,19 @@ data query;
      %threshold(_tvar=distinct_encid,nullval=col1^="ZZZA")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
-     distinct_patid_n=left(put(distinct_patid,threshold.));
-     distinct_encid_n=left(put(distinct_encid,threshold.));
+     record_n=strip(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(distinct_patid,threshold.));
+     distinct_encid_n=strip(put(distinct_encid,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
-     keep datamartid response_date query_package admit_date record_n record_pct
+     keep datamartid response_date query_package px_date record_n record_pct
           distinct_encid_n distinct_patid_n;
 run;
 
 *- Order variables -*;
 proc sql;
      create table dmlocal.&qname as select
-         datamartid, response_date, query_package, admit_date, record_n, 
+         datamartid, response_date, query_package, px_date, record_n, 
             record_pct, distinct_encid_n, distinct_patid_n
      from query;
 quit;
@@ -3742,6 +3784,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      set stats;
 
      * call standard variables *;
@@ -3755,7 +3798,7 @@ data query;
      %threshold(nullval=col1^="ZZZA" and enctype^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
 
      keep datamartid response_date query_package enc_type px record_n;
 run;
@@ -3799,6 +3842,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -3812,7 +3856,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
      keep datamartid response_date query_package enc_type record_n record_pct;
@@ -3886,6 +3930,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      set stats;
 
      * call standard variables *;
@@ -3899,7 +3944,7 @@ data query;
      %threshold(nullval=col1^="ZZZD" and enctype^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
 
      keep datamartid response_date query_package enc_type px_type record_n;
 run;
@@ -3960,6 +4005,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      merge stats
            stats_distinct(rename=(_freq_=_freq_encid))
      ;
@@ -3980,8 +4026,8 @@ data query;
      %threshold(_tvar=_freq_encid,nullval=enctype^="ZZZD" and year_month^=99999999)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
-     distinct_encid_n=left(put(_freq_encid,threshold.));
+     record_n=strip(put(_freq_,threshold.));
+     distinct_encid_n=strip(put(_freq_encid,threshold.));
 
      keep datamartid response_date query_package enc_type admit_date record_n 
           distinct_encid_n;
@@ -4043,6 +4089,7 @@ run;
 
 *- Format -*;
 data query;
+     length record_n distinct_patid_n $20;
      merge stats
            pid_unique(rename=(_freq_=distinct_patid));
      by col1 pxtype;
@@ -4059,8 +4106,8 @@ data query;
      %threshold(_tvar=distinct_patid,nullval=col1^="ZZZA" and pxtype^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
-     distinct_patid_n=left(put(distinct_patid,threshold.));
+     record_n=strip(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(distinct_patid,threshold.));
 
      keep datamartid response_date query_package px_type px record_n
           distinct_patid_n;
@@ -4119,6 +4166,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -4132,7 +4180,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
      keep datamartid response_date query_package px_source record_n record_pct;
@@ -4190,7 +4238,7 @@ run;
 
      *- Derive appropriate counts and variables -*;
      data &encvar._oneway;
-          length tag $25;
+          length all_n distinct_n null_n $20 tag dataset $25;
           set &encvar end=eof;
           by &encvar;
 
@@ -4281,7 +4329,7 @@ quit;
 
 *- Derive appropriate counts and variables -*;
 data query;
-     length record_n $10.;
+     length record_n $20.;
      set query;
 
      * call standard variables *;
@@ -4291,7 +4339,7 @@ data query;
      stat=put(_name_,$stat.);
 
      * counts *;
-     if _name_ in ("S11" "S12") or col1=.n then record_n=left(put(col1,threshold.));
+     if _name_ in ("S11" "S12") or col1=.n then record_n=strip(put(col1,threshold.));
      else record_n=put(col1,date9.);
 
      keep datamartid response_date query_package stat record_n;
@@ -4347,7 +4395,7 @@ quit;
 
 *- Derive appropriate counts and variables -*;
 data query;
-     length record_n $10.;
+     length record_n $20.;
      set query;
 
      * call standard variables *;
@@ -4357,7 +4405,7 @@ data query;
      stat=put(_name_,$stat.);
     
      * counts *;
-     if _name_ in ("S11" "S12") or col1=.n then record_n=left(put(col1,threshold.));
+     if _name_ in ("S11" "S12") or col1=.n then record_n=strip(put(col1,threshold.));
      else record_n=put(col1,date9.);
 
      keep datamartid response_date query_package stat record_n;
@@ -4431,6 +4479,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1 and col1^=.))
          stats(where=(_type_=1 and col1=.))
@@ -4446,7 +4495,7 @@ data query;
      %threshold(nullval=col1^=.)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
      keep datamartid response_date query_package enroll_m record_n record_pct;
@@ -4521,6 +4570,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1 and col1^=.))
          stats(where=(_type_=1 and col1=.))
@@ -4536,7 +4586,7 @@ data query;
      %threshold(nullval=col1^=.)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
      keep datamartid response_date query_package enroll_y record_n record_pct;
@@ -4618,6 +4668,7 @@ run;
 
 *- Add first and last actual year/month values to every record -*;
 data query;
+     length record_n $20;
      if _n_=1 then set minact;
      if _n_=1 then set maxact;
      set stats(where=(_type_=1));
@@ -4639,7 +4690,7 @@ data query;
      %threshold(nullval=year_month^=99999999)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
     
      keep datamartid response_date query_package month record_n;
 run;
@@ -4692,6 +4743,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -4705,7 +4757,7 @@ data query;
      %threshold(nullval=col1^="ZZZA")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
      keep datamartid response_date query_package enr_basis record_n record_pct;
@@ -4778,6 +4830,7 @@ quit;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      set query;
 
      * call standard variables *;
@@ -4830,7 +4883,7 @@ run;
 
      *- Derive appropriate counts and variables -*;
      data &encvar._oneway;
-          length tag $25;
+          length all_n distinct_n null_n $20 tag dataset $25;
           set &encvar end=eof;
           by &encvar;
 
@@ -4920,6 +4973,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n distinct_patid_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      merge stats(where=(_type_=1)) 
            pid_unique(where=(_type_^=99) rename=(_freq_=distinct_patid));
@@ -4937,8 +4991,8 @@ data query;
      %threshold(_tvar=distinct_patid,nullval=col1^="ZZZA")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
-     distinct_patid_n=left(put(distinct_patid,threshold.));
+     record_n=strip(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(distinct_patid,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
      keep datamartid response_date query_package measure_date record_n 
@@ -5021,6 +5075,7 @@ run;
 
 *- Add first and last actual year/month values to every record -*;
 data query;
+     length record_n $20;
      if _n_=1 then set minact;
      if _n_=1 then set maxact;
      set stats(where=(_type_=1));
@@ -5042,7 +5097,7 @@ data query;
      %threshold(nullval=year_month^=99999999)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
     
      keep datamartid response_date query_package measure_date record_n;
 run;
@@ -5101,6 +5156,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -5114,7 +5170,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
     
      keep datamartid response_date query_package vital_source record_n 
@@ -5140,7 +5196,7 @@ quit;
 
 proc format;
      value ht_dist
-        low - <0="<0"
+     low - -.000000001="<0" 
         0-10="0-10"
        11-20="11-20"
        21-45="21-45"
@@ -5161,7 +5217,7 @@ run;
 data data;
      length col1 3.;
      set vital(keep=patid ht);
-     if ht^=. then col1=ceil(ht);
+     if ht^=. then col1=int(ht);
      keep col1 patid;
 run;
 
@@ -5194,6 +5250,7 @@ data query;
 run;
 
 data query;
+     length record_n distinct_patid_n $20;
      merge query
            pid_unique(rename=(_freq_=distinct_patid));
      by col1;
@@ -5209,9 +5266,9 @@ data query;
      %threshold(_tvar=distinct_patid,nullval=col1^=.)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
-     distinct_patid_n=left(put(distinct_patid,threshold.));
+     distinct_patid_n=strip(put(distinct_patid,threshold.));
 
      * create special sort variable *;
      if col1^=. then sortvar=col1;
@@ -5275,6 +5332,7 @@ quit;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      set query;
 
      * call standard variables *;
@@ -5308,7 +5366,7 @@ quit;
 
 proc format;
      value wt_dist
-       low - <0="<0"
+     low - -.000000001="<0" 
             0-1="0-1"
             2-6="2-6"
            7-12="7-12"
@@ -5368,6 +5426,7 @@ data query;
 run;
 
 data query;
+     length record_n distinct_patid_n $20;
      merge query
            pid_unique(rename=(_freq_=distinct_patid));
      by col1;
@@ -5383,9 +5442,9 @@ data query;
      %threshold(_tvar=distinct_patid,nullval=col1^=.)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
-     distinct_patid_n=left(put(distinct_patid,threshold.));
+     distinct_patid_n=strip(put(distinct_patid,threshold.));
 
      * create special sort variable *;
      if col1^=. then sortvar=col1;
@@ -5449,6 +5508,7 @@ quit;
 
 *- Format -*;
 data query;
+     length record_n $20;
      set query;
     
      * call standard variables *;
@@ -5515,6 +5575,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1 and col1^=.))
          stats(where=(_type_=1 and col1=.))
@@ -5530,7 +5591,7 @@ data query;
      %threshold(nullval=col1^=.)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
     
      keep datamartid response_date query_package diastolic_group record_n 
@@ -5599,6 +5660,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1 and col1^=.))
          stats(where=(_type_=1 and col1=.))
@@ -5614,7 +5676,7 @@ data query;
      %threshold(nullval=col1^=.)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
     
      keep datamartid response_date query_package systolic_group record_n 
@@ -5674,6 +5736,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1 and col1^=.))
          stats(where=(_type_=1 and col1=.))
@@ -5689,7 +5752,7 @@ data query;
      %threshold(nullval=col1^=.)
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
     
      keep datamartid response_date query_package bmi_group record_n record_pct;
@@ -5749,6 +5812,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -5762,7 +5826,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.1);
     
      keep datamartid response_date query_package bp_position record_n 
@@ -5828,6 +5892,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -5841,7 +5906,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
     
      keep datamartid response_date query_package smoking record_n record_pct;
@@ -5903,6 +5968,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -5916,7 +5982,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
     
      keep datamartid response_date query_package tobacco record_n record_pct;
@@ -5962,6 +6028,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length record_n $20;
      if _n_=1 then set stats(where=(_type_=0) rename=(_freq_=denom));
      set stats(where=(_type_=1));
 
@@ -5975,7 +6042,7 @@ data query;
      %threshold(nullval=col1^="ZZZD")
 
      * counts *;
-     record_n=left(put(_freq_,threshold.));
+     record_n=strip(put(_freq_,threshold.));
      if _freq_>0 then record_pct=put((_freq_/denom)*100,6.2);
     
      keep datamartid response_date query_package tobacco_type record_n 
@@ -6065,6 +6132,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length distinct_patid_n $20;
      set stats(rename=(period=periodn));
      by periodn;
 
@@ -6078,7 +6146,7 @@ data query;
      %threshold(nullval=periodn^=99)
 
      * counts *;
-     distinct_patid_n=left(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(_freq_,threshold.));
 
      keep datamartid response_date query_package period distinct_patid_n;
 run;
@@ -6167,7 +6235,7 @@ data data;
             rx_start_date_mgmt rx_end_date_mgmt dispense_date_mgmt 
             lab_order_date_mgmt specimen_date_mgmt result_date_mgmt 
             measure_date_mgmt onset_date_mgmt report_date_mgmt resolve_date_mgmt
-            pro_date_mgmt $30;
+            pro_date_mgmt $50;
      if _n_=1 then set access;
      if _n_=1 then set sashelp.vmacro(keep=name value where=(name="SYSVER") 
                                         rename=(value=vsas));
@@ -6190,14 +6258,14 @@ data data;
                           refresh_death_cause_date=refresh_death_cause_daten));
 
      * table variables *;
-     query_package="DC V3.00";
+     query_package="DC V3.01";
      response_date=put("&sysdate"d,yymmdd10.);
      tag=strip(query_package)||"_"||strip(datamartid)||"_"||strip(response_date);
 
      if datamart_platform not in ("01" "02" "03" "04" "05" "NI" "OT" "UN" " ")
         then datamart_platform="Values outside of CDM specifications";
      
-     cdm_version=left(put(cdm_version_num,5.1));
+     cdm_version=strip(put(cdm_version_num,5.1));
 
      if datamart_claims not in ("01" "02" "NI" "OT" "UN" " ")
         then datamart_claims="Values outside of CDM specifications";
@@ -6217,7 +6285,7 @@ data data;
            else dm{dm1}="Values outside of CDM specifications";
         end;
 
-     array rfc $10 refresh_demographic_date refresh_enrollment_date 
+     array rfc $15 refresh_demographic_date refresh_enrollment_date 
                    refresh_encounter_date refresh_diagnosis_date 
                    refresh_procedures_date refresh_vital_date
                    refresh_dispensing_date refresh_lab_result_cm_date 
@@ -6399,6 +6467,7 @@ run;
 
 *- Derive appropriate counts and variables -*;
 data query;
+     length distinct_patid_n $20;
      set stats(rename=(period=periodn));
      by periodn;
 
@@ -6412,7 +6481,7 @@ data query;
      %threshold(nullval=periodn^=99)
 
      * counts *;
-     distinct_patid_n=left(put(_freq_,threshold.));
+     distinct_patid_n=strip(put(_freq_,threshold.));
 
      keep datamartid response_date query_package period distinct_patid_n;
 run;
