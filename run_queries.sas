@@ -1,27 +1,23 @@
 /*******************************************************************************
 *  $Source: run_queries $;
-*    $Date: 2016/08/05
+*    $Date: 2016/01/29
 *    Study: PCORnet
 *
-*  Purpose: Run PCORnet Data Characterization Query Package v3.02
+*  Purpose: Run PCORnet Data Characterization Query Package v3.0
 * 
 *   Inputs: 
-*	    1) PCORnet CDM v3.0 SAS data stores (datasets or views) 
-*	    2) SAS program:  /infolder/data_characterization_query.sas
-*	    3) SAS transport file:  /infolder/required_structure.cpt
+*	   1) PCORnet CDM v3.0 SAS data stores (datasets or views) 
+*	   2) SAS program:  /infolder/data_characterization_query.sas
 *
 *  Outputs: 
-*       From data_characterization_query.sas
-*           1) SAS dataset for each query stored in /dmlocal
-*                (e.g. dem_l3_n.sas7bdat)
-*           2) Print of each query in PDF file format stored in /drnoc
-*                (<DataMart Id>_<response date>_data_characterization_query.pdf)
-*           3) SAS transport file of SAS datasets for each query stored in /drnoc
-*                (<DataMart Id>_<response date>_data_characterization.cpt)
-*           4) SAS log file of query portion stored in /drnoc
-*                (<DataMart Id>_<response date>_data_characterization_query.log)
-*           5) SAS dataset of DataMart meta-data stored in /dmlocal
-*                (datamart_all.sas7bdat)
+*          1) SAS dataset for each query stored in /dmlocal
+*               (e.g. dem_l3_n.sas7bdat)
+*          2) Print of each query in PDF file format stored in /drnoc
+*               (<DataMart Id>_<response date>_data_characterization_query.pdf)
+*          3) SAS transport file of SAS datasets for each query stored in /drnoc
+*               (<DataMart Id>_<response date>_data_characterization.cpt)
+*          4) SAS log file of query portion stored in /drnoc
+*               (<DataMart Id>_<response date>_data_characterization_query.log)
 *
 *  Requirements:  
 *                1) Program run in SAS 9.3 or higher
@@ -37,7 +33,7 @@
 *                       that should be returned to the DRN OC via the PCORnet DRN
 *                       Query Tool (DRN QT). These tables consist of aggregate 
 *                       data/output and transfer the minimum required to answer
-*                `       the analytic question.
+*                       the analytic question.
 *                   c) /sasprograms: folder containing the master SAS program 
 *                       that must be edited and then executed locally.
 *                       (i.e. RUN_QUERIES.SAS)
@@ -55,15 +51,15 @@
 *                     (Example: /ct/pcornet/queries/PROD_P02_DQA_FDPRO_DCQ_T1D3_r001_v01/) 
 *                  ###  DO NOT add sub-directory structure (i.e. /dmlocal) ###
 *               3) User provides the low cell count value (section below)
-*                     (Example: 20) (default is 11)
+*                     (Example: 20) (default is zero)
 *******************************************************************************/
 
 ********************************************************************************
 * Provide user defined values
 ********************************************************************************;
- /*Enter directory where data is stored:*/             %let dpath=/ct/pcornet_dc/data/dc_queries/;
- /*Enter network/server directory: */                  %let qpath=/ct/pcornet_dc/queries/external/;
- /*Enter threshold value:*/                            %let threshold=11;
+ /*Enter directory where data is stored:*/             %let dpath=/ct/pcornet_dc/data/;
+ /*Enter network/server directory: */                  %let qpath=/ct/pcornet_dc/queries/;
+ /*Enter threshold value:*/                            %let threshold=0;
 ********************************************************************************
 * End of user provided values
 *******************************************************************************;
