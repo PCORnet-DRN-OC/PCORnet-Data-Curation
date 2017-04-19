@@ -3,7 +3,7 @@
 ### Version v3.03
 
 ### Purpose
-The purpose of the Data Characterization Query Package v3.03 is to characterize the data in 11 PCORnet Common Data Model (CDM) v3.0 tables. The package consists of 117 queries and an Empirical Data Characterization Report which summarizes key information from the query output and evaluates the results against PCORnet’s Data Checks.
+The purpose of the Data Characterization Query Package v3.03 is to characterize the data in 11 PCORnet Common Data Model (CDM) v3.0 tables. The package consists of 117 queries and an Empirical Data Characterization Report which summarizes key information from the query output and evaluates the results against PCORnet’s Data Checks. Output tables will be produced by running SAS programs against static local DataMarts in PCORnet CDM v3.0 with SAS data types.
 
 ### PCORnet data partners run code packages distributed through PopMedNet
 It's crucially important for data partners to follow the process of running the exact code module distributed to your DataMart by the Operations Center (via PopMedNet). This process ensures that end-to-end provenance is preserved. Complete instructions on how to run this code are provided to PCORnet DataMarts when the query is distributed to a given DataMart. 
