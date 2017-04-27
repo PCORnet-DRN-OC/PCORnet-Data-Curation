@@ -1,3 +1,5 @@
+*This README is intended to provide orientation to DC Query Package v3.04.*
+
 # PCORnet Data Characterization Query Package
 
 ### Version 3.04 
