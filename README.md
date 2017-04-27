@@ -1,4 +1,5 @@
-*This README is intended to provide orientation to DC Query Package v3.04.*
+### *This README is intended to provide orientation to DC Query Package v3.04.*  
+### *v3.03 is provided for historical reference only.*
 
 # PCORnet Data Characterization Query Package
 
