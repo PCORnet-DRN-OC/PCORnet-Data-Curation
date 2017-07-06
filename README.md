@@ -1,12 +1,12 @@
-### *This README is intended to provide orientation to DC Query Package v3.04.*  
-### *v3.03 is provided for historical reference only.*
+### *This README is intended to provide orientation to DC Query Package v3.10.*  
+### *v3.04 is provided for historical reference only.*
 
-# PCORnet Data Characterization Query Package
+# PCORnet Data Curation Query Package
 
-### Version 3.04 
+### Version 3.10 
 
 ### Purpose
-The purpose of the Data Characterization Query Package v3.04 is to characterize the data in 11 PCORnet Common Data Model (CDM) v3.0 tables. The package consists of 118 queries and an Empirical Data Characterization Report which summarizes key information from the query output and evaluates the results against PCORnet’s Data Checks. Output tables will be produced by running SAS programs against static local DataMarts in PCORnet CDM v3.0 with SAS data types.
+The purpose of the Data Characterization Query Package v3.10 is to characterize the data in 15 PCORnet Common Data Model (CDM) v3.1 tables. The package consists of 152 queries and an Empirical Data Curation Report which summarizes key information from the query output and evaluates the results against PCORnet’s Data Checks v3. Output tables will be produced by running SAS programs against static local DataMarts in PCORnet CDM v3.1 with SAS data types.
 
 ### PCORnet data partners run code packages distributed through PopMedNet
 It's crucially important for data partners to follow the process of running the exact code module distributed to your DataMart by the Operations Center (via PopMedNet). This process ensures that end-to-end provenance is preserved. Complete instructions on how to run this code are provided to PCORnet DataMarts when the query is distributed to a given DataMart. 
@@ -22,9 +22,9 @@ Therefore, **this repository is not the production version of the code package**
 This code is designed to run in SAS versions 9.3 or higher with SAS/GRAPH.
 
 ### Scope
-Output tables are produced by running the SAS code against static local DataMarts in PCORnet CDM v3.0 with SAS data types. 
+Output tables are produced by running the SAS code against static local DataMarts in PCORnet CDM v3.1 with SAS data types. 
 
-CDM specifications are available at [http://www.pcornet.org/pcornet-common-data-model/](http://www.pcornet.org/pcornet-common-data-model/). This version of the query allows DataMarts to incorporate [CDM errata identified as of January 20, 2016](https://github.com/CDMFORUM/CDM-ERRATA/blob/master/2016-01-20%20PCORnet%20CDM%20v3dot0%20errata.pdf).
+CDM specifications are available at [http://www.pcornet.org/pcornet-common-data-model/](http://www.pcornet.org/pcornet-common-data-model/). 
 
 ### Acknowledgments
-This code package was developed by the Data Characterization Development Team in the DRN OC, with members from the Duke Clinical Research Institute. We gratefully acknowledge their work and individual contributions.
+This code package was developed by the Data Curation Development Team in the DRN OC, with members from the Duke Clinical Research Institute. We gratefully acknowledge their work and individual contributions.
