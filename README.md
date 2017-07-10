@@ -1,5 +1,5 @@
 ### *This README is intended to provide orientation to DC Query Package v3.10.*  
-### *v3.04 is provided for historical reference only.*
+### *v3.03 and v3.04 are provided for historical reference only.*
 
 # PCORnet Data Curation Query Package
 
