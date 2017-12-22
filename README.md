@@ -1,12 +1,12 @@
-### *This README is intended to provide orientation to DC Query Package v3.11.*  
-### *v3.03, v3.04, and v3.10 are provided for historical reference only.*
+### *This README is intended to provide orientation to DC Query Package v3.12.*  
+### *v3.03, v3.04, v3.10, and v.3.11 are provided for historical reference only.*
 
 # PCORnet Data Curation Query Package
 
-### Version 3.11 
+### Version 3.12 
 
 ### Purpose
-The purpose of the Data Characterization Query Package v3.11 is to characterize the data in 15 PCORnet Common Data Model (CDM) v3.1 tables. The package consists of 152 queries and an Empirical Data Curation Report which summarizes key information from the query output and evaluates the results against PCORnet’s Data Checks v3. Output tables will be produced by running SAS programs against static local DataMarts in PCORnet CDM v3.1 with SAS data types.
+The purpose of the Data Curation Query Package v3.12 is to characterize the data in the 15 PCORnet Common Data Model (CDM) v3.1 tables. The package consists of the PCORnet code errors query, the data curation query and an Empirical Data Curation Report which summarizes key information from the data curation query output and evaluates the results against PCORnet’s Data Check v4. Output tables will be produced by running SAS programs against static local DataMarts in PCORnet CDM v3.1 with SAS data types.
 
 ### PCORnet data partners run code packages distributed through PopMedNet
 It's crucially important for data partners to follow the process of running the exact code module distributed to your DataMart by the Operations Center (via PopMedNet). This process ensures that end-to-end provenance is preserved. Complete instructions on how to run this code are provided to PCORnet DataMarts when the query is distributed to a given DataMart. 
