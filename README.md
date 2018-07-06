@@ -27,4 +27,4 @@ Output tables are produced by running the SAS code against static local DataMart
 CDM specifications are available at [http://www.pcornet.org/pcornet-common-data-model/](http://www.pcornet.org/pcornet-common-data-model/). 
 
 ### Acknowledgments
-This code package was developed by the Data Curation Development Team in the DRN OC, with members from the Duke Clinical Research Institute. We gratefully acknowledge their work and individual contributions.
+This code package was developed by the Data Curation Development Team in the DRN OC, with members from the Duke Clinical Research Institute.
