@@ -1,18 +1,18 @@
-### *This README is intended to provide orientation to DC Query Package v6.04.*  
+### *This README is intended to provide orientation to DC Query Package v6.05.*  
 ### *Previous versions are provided for historical reference only.*
 
 # PCORnet Data Curation Query Package
 
-### Version 6.04
+### Version 6.05
 
 ### Purpose
-The purpose of the Data Curation Query Package v6.04 is to characterize the data in PCORnet Common Data Model (CDM) v6.0. This package examines all 23 tables. The package consists of the Potential Code Errors query, a Data Curation query and an Empirical Data Curation Report which summarizes key information from the query output and evaluates the results against PCORnet’s Data Check v10. Output tables will be produced by running SAS programs against static local DataMarts in PCORnet CDM v6.0 with SAS data types.
+The purpose of the Data Curation Query Package v6.05 is to characterize the data in PCORnet Common Data Model (CDM) v6.0. This package examines all 23 tables. The package consists of the Potential Code Errors query, a Data Curation query and an Empirical Data Curation Report which summarizes key information from the query output and evaluates the results against PCORnet’s Data Check v12. Output tables will be produced by running SAS programs against static local DataMarts in PCORnet CDM v6.0 with SAS data types.
 
 ### PCORnet data partners run code packages distributed through PopMedNet
-It's crucially important for data partners to follow the process of running the exact code module distributed to your DataMart by the Operations Center (via PopMedNet). This process ensures that end-to-end provenance is preserved. Complete instructions on how to run this code are provided to PCORnet DataMarts when the query is distributed to a given DataMart. 
+It's crucially important for data partners to follow the process of running the exact code module distributed to your DataMart by the Operations Center. This process ensures that end-to-end provenance is preserved. Complete instructions on how to run this code are provided to PCORnet DataMarts when the query is distributed to a given DataMart. 
 
 ### This GitHub repository is a copy for reference
-PCORnet's Distributed Research Network Operations Center (DRN OC) is responsible for distribution of the production code package to data partners, which happens within PopMedNet.
+PCORnet's Distributed Research Network Operations Center (DRN OC) is responsible for distribution of the production code package to data partners.
 
 Waves of data partner querying may result in more than one code package being active at any given time. Beta testing is also an important ongoing activity.
 
