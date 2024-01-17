@@ -1,1 +1,19 @@
+Dear Network Partners,
+ 
+Please see below for two important updates regarding Data Curation Cycle 15 refresh 1. 
+ 
+1.	As was communicated on Tuesday, two issues were identified with data curation query package v611. Please refer to the Data Curation Query Package Issue Tracker here for full details and options for remediation. One of these issues occurs when the query is run in parts (modular approach) and the other affects data check 2.05. Please note that the Issue Tracker provides the option of running v611 using the non-modularized approach and correcting the DC 2.05 issue at the Coordinating Center. The updated version of the query (v612) corrects both of these issues and is now available here on iMeet. 
+ 
+We strongly encourage sites to submit by the January 23rd deadline, but we can extend the due date to the 25th,  if needed. Please note that all submissions will be reviewed and finalized by January 29th, so if you have any issues that need to be remediated, there will be limited time to do so if you submit close to the deadline. 
+ 
+2.	We have received several questions about what might be causing new exceptions to Data Check 2.05 (lab specimen source mapping), Data Check 2.06 (lab result outliers) and Data Check 3.13 (lab volume outliers). While the data check logic did not change, the lookup tables were updated to (a) incorporate changes/additions to the LOINC terminology dataset (b) incorporate revisions to the data curation lab group logic, (c) incorporate insights from last year’s lab characterization query, and (d) to use Cycle 14 Refresh 2 data to establish the network-level thresholds for Data Checks 2.06 (lab result outliers) and Data Check 3.13 (lab volume outliers).  The thresholds are updated for each cycle, while all other changes are only made annually for the January refresh. The Coordinating Center and PCORI recognizes that it takes time to investigate new exceptions, classify the nature of the exception, and remediate them if applicable. Therefore, if you have new exceptions to these checks, please mark them as remediable in the ETL ADD and provide an explanation that they are under investigation. If you have confirmed that they cannot be remediated, please mark them as irremediable. 
+ 
+Please reach out to drnoc@pcornet.org with any questions.
+
+Thank you and best regards,
+DRN OC
+
+PCORnet Distributed Research Network Operations Center (DRN OC)
+drnoc@pcornet.org
+www.pcornet.org
 
