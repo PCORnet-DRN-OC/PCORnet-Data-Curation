@@ -11,7 +11,7 @@ Query results will be used by the PCORnet Coordinating Center’s Distributed Re
 To provide the DRN OC with additional insight into the query results, the ETL Annotated Data Dictionary (ETL ADD) must be updated prior to submitting the response to this query. 
 
 
-### PCORnet data partners run code packages distributed through PopMedNet
+### PCORnet data partners run code packages distributed by Operations Center
 It's crucially important for data partners to follow the process of running the exact code module distributed to your DataMart by the Operations Center. This process ensures that end-to-end provenance is preserved. Complete instructions on how to run this code are provided to PCORnet DataMarts when the query is distributed to a given DataMart. 
 
 ### This GitHub repository is a copy for reference
