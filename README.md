@@ -1,12 +1,12 @@
-### *This README is intended to provide orientation to DC Query Package v6.12.*  
+### *This README is intended to provide orientation to DC Query Package v6.13.*  
 ### *Previous versions are provided for historical reference only.*
 
 # PCORnet Data Curation Query Package
 
-### Version 6.12
+### Version 6.13
 
 ### Purpose
-The purpose of the Data Curation Query Package v6.12 is to characterize the data in PCORnet Common Data Model (CDM) v6.1. This package examines all 23 tables. The package consists of the Potential Code Errors query, a Data Curation query and an Empirical Data Curation Report which summarizes key information from the query output and evaluates the results against PCORnet’s Data Checks v15. Output tables will be produced by running SAS programs against static local DataMarts in PCORnet CDM v6.1 with SAS data types. 
+The purpose of the Data Curation Query Package v6.13 is to characterize the data in PCORnet Common Data Model (CDM) v6.1. This package examines all 23 tables. The package consists of the Potential Code Errors query, a Data Curation query and an Empirical Data Curation Report which summarizes key information from the query output and evaluates the results against PCORnet’s Data Checks v15. Output tables will be produced by running SAS programs against static local DataMarts in PCORnet CDM v6.1 with SAS data types. 
 Query results will be used by the PCORnet Coordinating Center’s Distributed Research Network Operations Center (DRN OC) to ensure a foundational level of data quality across the networks. Approved results may be used to provide initial feasibility estimates for prep-to-research queries, inform study planning activities, and to create DataMart-level, CRN-level or network-level reports. Data aggregated at the network level may be shared publicly. DataMart-level results may be published within PCORnet and data from this query can be used to inform the PCORnet Coordinating Center of data availability and fitness for use in response to PCORnet queries, to enable the Coordinating Center to share high-level counts of data variables with requestors, to present PCORnet-level Aggregate Data on public-facing websites, (e.g., PCORnet.org) in manuscripts consistent with the guidelines of the International Committee of Medical Journal Editors (“ICMJE”), and for use in PCORnet marketing materials. 
 To provide the DRN OC with additional insight into the query results, the ETL Annotated Data Dictionary (ETL ADD) must be updated prior to submitting the response to this query. 
 
