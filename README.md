@@ -27,7 +27,7 @@ This code is designed to run in SAS versions 9.3 or higher with SAS/GRAPH.
 ### Scope
 Output tables are produced by running the SAS code against static local DataMarts in PCORnet® CDM v6.1 with SAS data types. 
 
-PCORnet CDM specifications are available at [http://www.pcornet.org/pcornet-common-data-model/](http://www.pcornet.org/pcornet-common-data-model/). 
+PCORnet® CDM specifications are available at [http://www.pcornet.org/pcornet-common-data-model/](http://www.pcornet.org/pcornet-common-data-model/). 
 
 ### Acknowledgments
 This code package was developed by the Data Curation Development Team at Duke Clinical Research Institute.
