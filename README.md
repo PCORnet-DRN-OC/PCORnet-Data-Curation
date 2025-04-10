@@ -1,7 +1,7 @@
 ### *This README is intended to provide orientation to DC Query Package v6.16.*  
 ### *Previous versions are provided for historical reference only.*
 
-# PCORnet Data Curation Query Package
+# PCORnet® Data Curation Query Package
 
 ### Version 6.16
 
